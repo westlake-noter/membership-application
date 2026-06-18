@@ -56,11 +56,11 @@ jobs:
 
           echo "private_issue_url=$private_issue_url" >> "$GITHUB_OUTPUT"
 
-      - name: Close original issue
+      - name: Delete original issue
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
-          PRIVATE_ISSUE_URL: ${{ steps.forward.outputs.private_issue_url }}
+          ISSUE_NODE_ID: ${{ github.event.issue.node_id }}
         run: |
-          gh issue close "${{ github.event.issue.number }}" \
-            --repo "${{ github.repository }}" \
-            --comment "Application forwarded to the private review queue: $PRIVATE_ISSUE_URL"
+          gh api graphql \
+            -f query='mutation($issueId: ID!) { deleteIssue(input: { issueId: $issueId }) { clientMutationId } }' \
+            -f issueId="$ISSUE_NODE_ID"
