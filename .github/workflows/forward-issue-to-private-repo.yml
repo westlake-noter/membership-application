@@ -34,24 +34,14 @@ jobs:
           fi
 
           body_file="$(mktemp)"
-          python3 - "$body_file" <<'PY'
-          import os
-          import sys
-
-          body = os.environ.get("ISSUE_BODY") or ""
-          content = f"""Source issue: {os.environ["SOURCE_REPO"]}#{os.environ["ISSUE_NUMBER"]}
-          Original URL: {os.environ["ISSUE_URL"]}
-          Applicant: @{os.environ["ISSUE_AUTHOR"]} ({os.environ["ISSUE_AUTHOR_URL"]})
-          Created at: {os.environ["ISSUE_CREATED_AT"]}
-
-          ---
-
-          {body}
-          """
-
-          with open(sys.argv[1], "w", encoding="utf-8") as issue_body:
-              issue_body.write(content)
-          PY
+          {
+            printf 'Source issue: %s#%s\n' "$SOURCE_REPO" "$ISSUE_NUMBER"
+            printf 'Original URL: %s\n' "$ISSUE_URL"
+            printf 'Applicant: @%s (%s)\n' "$ISSUE_AUTHOR" "$ISSUE_AUTHOR_URL"
+            printf 'Created at: %s\n\n' "$ISSUE_CREATED_AT"
+            printf '%s\n\n' '---'
+            printf '%s\n' "$ISSUE_BODY"
+          } > "$body_file"
 
           private_issue_url="$(gh issue create \
             --repo "$TARGET_REPO" \
