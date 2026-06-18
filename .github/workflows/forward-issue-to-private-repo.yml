@@ -1,1 +1,70 @@
+name: Forward issue to private repo
 
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  issues: write
+  contents: read
+
+jobs:
+  forward:
+    name: Forward application issue
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Create private issue copy
+        id: forward
+        env:
+          GH_TOKEN: ${{ secrets.ISSUE_FORWARD_TOKEN }}
+          TARGET_REPO: westlake-noter/private-membership-applications
+          SOURCE_REPO: ${{ github.repository }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          ISSUE_TITLE: ${{ github.event.issue.title }}
+          ISSUE_BODY: ${{ github.event.issue.body }}
+          ISSUE_AUTHOR: ${{ github.event.issue.user.login }}
+          ISSUE_AUTHOR_URL: ${{ github.event.issue.user.html_url }}
+          ISSUE_URL: ${{ github.event.issue.html_url }}
+          ISSUE_CREATED_AT: ${{ github.event.issue.created_at }}
+        run: |
+          if [ -z "$GH_TOKEN" ]; then
+            echo "ISSUE_FORWARD_TOKEN is not configured." >&2
+            exit 1
+          fi
+
+          body_file="$(mktemp)"
+          python3 - "$body_file" <<'PY'
+          import os
+          import sys
+
+          body = os.environ.get("ISSUE_BODY") or ""
+          content = f"""Source issue: {os.environ["SOURCE_REPO"]}#{os.environ["ISSUE_NUMBER"]}
+          Original URL: {os.environ["ISSUE_URL"]}
+          Applicant: @{os.environ["ISSUE_AUTHOR"]} ({os.environ["ISSUE_AUTHOR_URL"]})
+          Created at: {os.environ["ISSUE_CREATED_AT"]}
+
+          ---
+
+          {body}
+          """
+
+          with open(sys.argv[1], "w", encoding="utf-8") as issue_body:
+              issue_body.write(content)
+          PY
+
+          private_issue_url="$(gh issue create \
+            --repo "$TARGET_REPO" \
+            --title "[Application #$ISSUE_NUMBER] $ISSUE_TITLE" \
+            --body-file "$body_file")"
+
+          echo "private_issue_url=$private_issue_url" >> "$GITHUB_OUTPUT"
+
+      - name: Close original issue
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PRIVATE_ISSUE_URL: ${{ steps.forward.outputs.private_issue_url }}
+        run: |
+          gh issue close "${{ github.event.issue.number }}" \
+            --repo "${{ github.repository }}" \
+            --comment "Application forwarded to the private review queue: $PRIVATE_ISSUE_URL"
