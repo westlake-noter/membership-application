@@ -58,9 +58,14 @@ jobs:
 
       - name: Delete original issue
         env:
-          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          GH_TOKEN: ${{ secrets.ISSUE_DELETE_TOKEN }}
           ISSUE_NODE_ID: ${{ github.event.issue.node_id }}
         run: |
+          if [ -z "$GH_TOKEN" ]; then
+            echo "ISSUE_DELETE_TOKEN is not configured." >&2
+            exit 1
+          fi
+
           gh api graphql \
             -f query='mutation($issueId: ID!) { deleteIssue(input: { issueId: $issueId }) { clientMutationId } }' \
             -f issueId="$ISSUE_NODE_ID"
