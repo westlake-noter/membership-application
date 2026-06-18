@@ -14,10 +14,21 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Generate GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@v3.2.0
+        with:
+          app-id: ${{ secrets.APP_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+          owner: westlake-noter
+          repositories: |
+            membership-application
+            private-membership-applications
+
       - name: Create private issue copy
         id: forward
         env:
-          GH_TOKEN: ${{ secrets.ISSUE_FORWARD_TOKEN }}
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
           TARGET_REPO: westlake-noter/private-membership-applications
           SOURCE_REPO: ${{ github.repository }}
           ISSUE_NUMBER: ${{ github.event.issue.number }}
@@ -28,11 +39,6 @@ jobs:
           ISSUE_URL: ${{ github.event.issue.html_url }}
           ISSUE_CREATED_AT: ${{ github.event.issue.created_at }}
         run: |
-          if [ -z "$GH_TOKEN" ]; then
-            echo "ISSUE_FORWARD_TOKEN is not configured." >&2
-            exit 1
-          fi
-
           body_file="$(mktemp)"
           {
             printf 'Source issue: %s#%s\n' "$SOURCE_REPO" "$ISSUE_NUMBER"
@@ -52,7 +58,7 @@ jobs:
 
       - name: Close original issue
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
           PRIVATE_ISSUE_URL: ${{ steps.forward.outputs.private_issue_url }}
         run: |
           gh issue close "${{ github.event.issue.number }}" \
