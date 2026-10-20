@@ -10,23 +10,17 @@ This repository receives membership requests for the Westlake Noter note contrib
 
 ### 1. 提交申请 / Submit an Application
 
-点击上方 **Issues** 选项卡，然后点击 **New Issue**，选择 **"申请加入组织 / Organization Membership Request"** 模板，填写并提交。
+直接[填写成员申请 Issue](https://github.com/westlake-noter/membership-application/issues/new?template=membership-request.yml)，提供 **GitHub 账号、姓名、学校邮箱**三项信息后提交即可。不需要填写联系电话、申请理由或额外确认声明。
 
-Click the **Issues** tab above, then click **New Issue**, select the **"申请加入组织 / Organization Membership Request"** template, fill it out, and submit.
+Open the [membership request form](https://github.com/westlake-noter/membership-application/issues/new?template=membership-request.yml) and submit your **GitHub username, name, and school email**. No phone number, motivation statement, or additional confirmation is required.
 
-### 2. 自动转入私有审核队列 / Forwarded to Private Review
+### 2. 等待审核 / Wait for Review
 
-提交后，申请内容会自动转发到组织的私有审核仓库。为保护申请信息，公开 issue 会在转发成功后自动删除。
+管理员直接在本仓库的公开 Issue 中审核申请；如需补充信息，会在 Issue 中回复。申请不再自动转发到私有仓库，也不会自动删除。
 
-After submission, the application is automatically forwarded to the organization's private review repository. To protect applicant information, the public issue is deleted after the private copy is created successfully.
+Maintainers review requests directly in this repository's public issues and reply there if more information is needed. Applications are no longer automatically forwarded to a private repository or deleted.
 
-### 3. 等待审核 / Wait for Review
-
-管理员会在 **3-5 个工作日** 内审核你的申请。如有需要补充的信息，管理员会通过 GitHub 或你填写的联系方式与你沟通。
-
-Reviewers will process applications within **3-5 business days**. If additional information is needed, we will contact you via GitHub or the contact details you provided.
-
-### 4. 接收邀请 / Receive Invitation
+### 3. 接收邀请 / Receive Invitation
 
 审核通过后，你将收到来自 GitHub 的组织加入邀请邮件。请及时查收并点击 **Accept** 接受邀请。
 
@@ -38,18 +32,17 @@ Once approved, you will receive an organization invitation email from GitHub. Pl
 
 | 项目 / Item | 说明 / Description |
 | :--- | :--- |
-| **真实姓名 / Full Name** | 请填写你的真实姓名 / Please provide your full legal name |
+| **GitHub 账号 / GitHub Username** | 用于接收组织邀请的用户名 / Username that will receive the organization invitation |
+| **真实姓名 / Full Name** | 请填写你的真实姓名 / Please provide your real name |
 | **学校邮箱 / School Email** | 仅限 `@westlake.edu.cn` 邮箱 / `@westlake.edu.cn` email only |
-| **联系电话 / Phone Number** | 用于必要时联系 / Used only when follow-up is necessary |
-| **申请理由 / Motivation** | 简要说明加入原因及兴趣方向 / Briefly describe your motivation and areas of interest |
 
 ---
 
 ## 隐私说明 / Privacy Notice
 
-申请内容只用于 Westlake Noter 组织成员审核。公开仓库不会长期保留申请 issue；转发成功后，申请记录会保存在组织私有仓库中，仅供维护者审核和追溯。
+**本仓库为公开仓库，申请 Issue 中的 GitHub 账号、姓名和学校邮箱会对所有人可见。** 提交前请确认你愿意公开这些信息。请勿提交电话、密码、验证码或其他额外个人信息。关闭 Issue 不会隐藏其中的内容。
 
-Application content is used only for Westlake Noter membership review. This public repository does not retain submitted issues long-term; after forwarding succeeds, application records are stored in a private organization repository for maintainer review and audit purposes.
+**This repository is public. Your GitHub username, name, and school email in the application issue will be visible to everyone.** Submit only if you are comfortable making this information public. Do not include phone numbers, passwords, verification codes, or other personal information. Closing an issue does not hide its contents.
 
 ---
 

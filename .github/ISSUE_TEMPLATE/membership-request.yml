@@ -1,5 +1,5 @@
 name: 申请加入组织 / Organization Membership Request
-description: 请使用此模板申请加入笔记贡献组织。Please use this template to apply for membership.
+description: 填写 GitHub 账号、姓名和学校邮箱即可申请。Apply with your GitHub username, name, and school email.
 title: "[成员申请] <请替换为你的真实姓名>"
 labels: ["membership-request", "pending-review"]
 body:
@@ -8,15 +8,26 @@ body:
       value: |
         ## 欢迎申请加入笔记贡献组织 / Welcome to the Notes Contribution Organization
         
-        请如实填写以下信息，管理员将尽快审核。
+        只需填写 GitHub 账号、姓名和学校邮箱，管理员将尽快审核。
+        注意：本 Issue 及填写的信息会公开可见。请勿填写电话、密码、验证码等额外个人信息。
         
-        Please fill in the information below. Reviewers will respond **as soon as possible**.
+        Provide only your GitHub username, name, and school email. Maintainers will review your request.
+        This issue and your submitted information will be public. Do not include phone numbers, passwords, verification codes, or other personal information.
+
+  - type: input
+    id: github
+    attributes:
+      label: GitHub 账号 / GitHub Username
+      description: 请填写用于接收组织邀请的 GitHub 用户名
+      placeholder: your-github-username
+    validations:
+      required: true
 
   - type: input
     id: name
     attributes:
       label: 真实姓名 / Full Name
-      description: 请填写你的法定姓名
+      description: 请填写你的真实姓名
       placeholder: 例如： 张三
     validations:
       required: true
@@ -26,38 +37,6 @@ body:
     attributes:
       label: 学校邮箱 / School Email
       description: 请输入你的学校邮箱（仅限 `@westlake.edu.cn` 域名）
-      placeholder: 例如： your.name
+      placeholder: your.name@westlake.edu.cn
     validations:
       required: true
-
-  - type: input
-    id: phone
-    attributes:
-      label: 联系电话 / Phone Number
-      description: 请填写手机号码，以便紧急情况联系
-      placeholder: "例如: (+86) 138-0000-1111"
-    validations:
-      required: true
-
-  - type: textarea
-    id: reason
-    attributes:
-      label: 申请理由 / Motivation
-      description: 请简要说明你希望加入的原因及兴趣方向
-      placeholder: |
-        例如: 
-        - 希望参与笔记协作项目
-        - 对知识整理和分享感兴趣
-    validations:
-      required: true
-
-  - type: checkboxes
-    id: confirmation
-    attributes:
-      label: 确认声明 / Confirmation
-      description: 请确认以下事项
-      options:
-        - label: 我确认以上填写的信息真实有效 / I confirm the information provided is true and accurate
-          required: true
-        - label: 我已阅读并同意遵循组织的协作规范 / I have read and agree to follow the organization's collaboration guidelines
-          required: true
